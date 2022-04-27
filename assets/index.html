@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tauri</title>
+  </head>
+
+  <body>
+    <h1>Tauri Commands</h1>
+    <div>Response: <span id="response"></span></div>
+    <div style="margin-top: 32px; padding: 16px">
+      <input type="text" id="height" placeholder="window height" value="500" />
+      <div id="container"></div>
+    </div>
+    <script>
+      function runCommand(commandName, args) {
+        const result = document.querySelector('#response');
+        window.__TAURI__
+          .invoke(commandName, args)
+          .then((response) => {
+            result.innerText = `Ok(${response})`
+          })
+          .catch((error) => {
+            result.innerText = `Err(${error})`
+          })
+      }
+
+      const container = document.querySelector('#container');
+
+      const button = document.createElement('button')
+      button.innerHTML = `Run ${name}`
+      button.addEventListener('click', function () {
+        const args = {
+          height: parseFloat(document.getElementById('height').value)
+        };
+
+        runCommand('resize_window', args);
+      });
+      container.appendChild(button);
+    </script>
+  </body>
+</html>
